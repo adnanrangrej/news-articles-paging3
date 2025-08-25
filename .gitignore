@@ -1,0 +1,33 @@
+# IDE files and directories
+.idea/
+.gradle/
+*.iml
+.DS_Store
+
+# Local configuration file (contains SDK path and API keys)
+local.properties
+
+# Build output directories
+/build
+*/build
+
+# Build artifacts
+*.apk
+*.aab
+*.ap_
+
+# Keystore files (NEVER commit these)
+*.jks
+*.keystore
+
+# Google Services file (can contain sensitive info)
+google-services.json
+
+# Generated files
+/captures/
+.cxx/
+*.hprof
+*.pyc
+
+# Misc
+*.log

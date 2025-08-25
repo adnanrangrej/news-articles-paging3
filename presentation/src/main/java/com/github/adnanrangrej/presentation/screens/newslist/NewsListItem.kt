@@ -1,0 +1,143 @@
+package com.github.adnanrangrej.presentation.screens.newslist
+
+import android.util.Log
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccessTime
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MaterialTheme.typography
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import com.github.adnanrangrej.domain.model.Article
+import com.github.adnanrangrej.presentation.component.NewsImage
+import java.time.OffsetDateTime
+import java.time.format.DateTimeFormatter
+import java.util.Locale
+
+@Composable
+fun NewsListItem(
+    modifier: Modifier = Modifier,
+    article: Article
+) {
+
+
+    Card(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(8.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+    ) {
+
+        Row(
+            modifier = Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically
+        ) {
+            // Image
+            NewsImage(
+                url = article.imageUrl,
+                contentDescription = article.title,
+                modifier = Modifier
+                    .size(100.dp)
+                    .clip(RoundedCornerShape(8.dp))
+            )
+
+            Spacer(Modifier.width(8.dp))
+
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                // Title
+                Text(
+                    text = article.title,
+                    style = typography.titleMedium,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis
+                )
+
+
+                Row {
+                    Text(
+                        text = article.sourceName,
+                        style = typography.labelMedium,
+                        color = MaterialTheme.colorScheme.onPrimary,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+
+                    Spacer(modifier = Modifier.width(8.dp))
+
+                    Icon(
+                        imageVector = Icons.Default.AccessTime,
+                        contentDescription = "Published At",
+                        modifier = Modifier.size(16.dp)
+                    )
+
+                    Spacer(modifier = Modifier.width(4.dp))
+
+                    Text(
+                        text = formatDate(article.publishedAt),
+                        style = typography.labelMedium,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+
+                }
+
+                Text(
+                    text = article.description,
+                    style = typography.bodyMedium,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis
+                )
+            }
+
+        }
+    }
+}
+
+
+@Preview
+@Composable
+private fun NewsListItemPreview() {
+    MaterialTheme {
+        NewsListItem(
+            modifier = Modifier.fillMaxWidth(),
+            article = Article(
+                publishedAt = "2025-08-01T16:51:29Z",
+                author = "Sean Hollister",
+                content = "<ul><li></li><li></li><li></li></ul>\\r\\nGoogle is asking the court for an emergency stay following Epics big win.\\r\\nGoogle is asking the court for an emergency stay following Epics big win.\\r\\nby\\r\\nSean Ho… [+8078 chars]",
+                description = "Yesterday, when Epic won its Google antitrust lawsuit for a second time, it wasn’t quite clear how soon Google would need to start dismantling its affirmed illegal monopoly. Today, Google admits the answer is: 14 days. Google has just 14 days to enact major c…",
+                sourceName = "The Verge",
+                title = "Google has just two weeks to begin cracking open Android, it admits in emergency filing",
+                url = "https://www.theverge.com/news/717440/google-epic-open-play-store-emergency-stay",
+                imageUrl = "https://platform.theverge.com/wp-content/uploads/sites/2/2025/08/STKS487_Antitrust_STK093_Google_A.jpg?quality=90&strip=all&crop=0%2C10.732984293194%2C100%2C78.534031413613&w=1200"
+            )
+        )
+    }
+}
+
+fun formatDate(dateString: String): String = try {
+    val offsetDateTime = OffsetDateTime.parse(dateString)
+    val formatter = DateTimeFormatter.ofPattern("MMM dd, yyyy", Locale.getDefault())
+    offsetDateTime.format(formatter)
+} catch (e: Exception) {
+    Log.e("formatDate", "formatDate: $e")
+    dateString
+}
