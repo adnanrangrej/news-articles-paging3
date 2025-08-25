@@ -38,9 +38,7 @@ fun NewsListScreenBody(
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
 
-                items(newsItem.itemCount, key = {
-                    newsItem[it]?.url ?: ""
-                }) { index ->
+                items(newsItem.itemCount) { index ->
 
                     val article = newsItem[index]
 
