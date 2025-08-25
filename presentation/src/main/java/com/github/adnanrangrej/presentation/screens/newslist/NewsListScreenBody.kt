@@ -35,7 +35,7 @@ fun NewsListScreenBody(
 
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.spacedBy(16.dp)
+                verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
 
                 items(newsItem.itemCount, key = {
